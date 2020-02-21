@@ -84,7 +84,7 @@ void checkState();
 
 int main( int argc, char *argv[] )
 {
-    loadMaze();
+    loadMaze();//read from the file into the 2d array
 
     if ( solveMaze() )
       printf( "The mouse is free!!!!\n" );
@@ -100,45 +100,29 @@ int main( int argc, char *argv[] )
 //////////////////////////////////////////////
 // Cell routines
 //////////////////////////////////////////////
-Boolean equalCells(const Cell cell1, const Cell cell2){
+Boolean equalCells(const Cell cell1, const Cell cell2){//checks if 2 cells are equal
   if ((cell1.row==cell2.row)&&(cell1.column==cell2.column)) {
     return true;
   }
   return false;
 }
 
-Cell makeCell(const int row, const int col){
+Cell makeCell(const int row, const int col){//make a new cell 
   Cell refer;
   refer.row = row;
   refer.column = col;
   return refer;
 }
 
-Boolean validCell(const Cell theCell){
+Boolean validCell(const Cell theCell){//check if the cell is b/w the range of maze
   if(theCell.row<0||theCell.column<0||
     theCell.row>mazeRows||theCell.column>mazeCols){
     return false;
   }
   return true;
 }
-
-Boolean noMoreCells(){//working
-  if(top==NULL){
-    return true;
-  }
-  return false;
-}
-
-Cell nextCell(){//working
- Cell c =top->cell;
- Cell a;
- a.row = c.row;
- a.column = c.column;
- printf("going to %d %d \n",c.row,c.column);
-  return a;
-}
-
-Boolean solveMaze(){
+//............BACKTRACKING ALGORITHM..................................\\
+Boolean solveMaze(){//
   printMaze();
     Cell goalCell = escape;
     Cell startCell = mouse;
@@ -182,23 +166,23 @@ Boolean solveMaze(){
 //////////////////////////////////////////////
 // List routines
 //////////////////////////////////////////////
-void deleteTop()//working
+void deleteTop()//delete the cell from the list
 {   if(top->next == NULL){
-  Cell c =top->cell;
-  printf("deleting %d %d \n",c.row,c.column);
-      top =NULL;
-      }else{
-    Cell c =top->cell;
-    printf("deleting %d %d \n",c.row,c.column);
-    CellNode *temp = top->next;
-    top->cell = top->next->cell;
-    top->next = temp->next;
-    free(temp);
-    c =top->cell;
-    printf("new top %d %d \n",c.row,c.column);
+       Cell c =top->cell;
+       printf("deleting %d %d \n",c.row,c.column);
+       top =NULL;
+    }else{
+      Cell c =top->cell;
+      printf("deleting %d %d \n",c.row,c.column);
+      CellNode *temp = top->next;
+      top->cell = top->next->cell;
+      top->next = temp->next;
+      free(temp);
+      c =top->cell;
+      printf("new top %d %d \n",c.row,c.column);
+    }
 }
-}
-void addCell(const Cell cell){//working
+void addCell(const Cell cell){//add the cell to the linked list
 
   CellNode *node=malloc(sizeof(CellNode));
   node->cell=cell;
@@ -208,11 +192,27 @@ void addCell(const Cell cell){//working
 printf("adding %d %d \n",c.row,c.column);
 
 }
+Boolean noMoreCells(){//return true if the list is empty
+  if(top==NULL){
+    return true;
+  }
+  return false;
+}
+
+Cell nextCell(){//return the next cell from the list
+  Cell c =top->cell;
+  Cell a;
+  a.row = c.row;
+  a.column = c.column;
+  printf("going to %d %d \n",c.row,c.column);
+  return a;
+}
+
 
 //////////////////////////////////////////////
 // Maze routines
 //////////////////////////////////////////////
-void loadMaze(){
+void loadMaze(){//reads from file to the array
     char line[MAX_DIMENSION];
     int i = 0;
     FILE *f =fopen("maze3.txt","r");
@@ -224,7 +224,7 @@ void loadMaze(){
          while (fgets(line, MAX_DIMENSION, f ) != NULL)
         {   int k = 0;
             for (int j = 0; j < strlen(line); j++ ){
-                if(!isspace(line[j])){
+                if(!isspace(line[j])){// dont read the spaces into the array
                   maze[i][k]=line[j];
                   char c = line[j];
                   if(c=='r'){
@@ -240,7 +240,7 @@ void loadMaze(){
     }
 }
 
-void printMaze(){
+void printMaze(){//print the array
   for(int i =0;i<mazeRows;i++){
     for (int j = 0; j < mazeCols; j++) {
       printf("%c",maze[i][j]);
