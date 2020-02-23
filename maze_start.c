@@ -107,7 +107,7 @@ Boolean equalCells(const Cell cell1, const Cell cell2){//checks if 2 cells are e
   return false;
 }
 
-Cell makeCell(const int row, const int col){//make a new cell 
+Cell makeCell(const int row, const int col){//make a new cell
   Cell refer;
   refer.row = row;
   refer.column = col;
@@ -246,5 +246,5 @@ void printMaze(){//print the array
       printf("%c",maze[i][j]);
     }
     printf("\n");
-  }printf("\n");
+  }printf("SUP BRO\n");
 }
