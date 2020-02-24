@@ -121,7 +121,7 @@ Boolean validCell(const Cell theCell){//check if the cell is b/w the range of ma
   }
   return true;
 }
-//............BACKTRACKING ALGORITHM..................................\\
+//............BACKTRACKING ALGORITHM..................................
 Boolean solveMaze(){//
   printMaze();
     Cell goalCell = escape;
